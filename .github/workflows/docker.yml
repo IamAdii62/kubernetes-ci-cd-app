@@ -10,26 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Code checkout
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Docker login
+      # 2. Verify files (DEBUG step - important)
+      - name: Check files
+        run: ls -la
+
+      # 3. Docker login
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 3. Build frontend image (root folder)
+      # 4. Build frontend image
       - name: Build frontend image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:latest .
 
-      # 4. Build backend image (backend folder)
+      # 5. Build backend image
       - name: Build backend image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
 
-      # 5. Push frontend image
+      # 6. Push frontend
       - name: Push frontend image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/myapp:latest
 
-      # 6. Push backend image
+      # 7. Push backend
       - name: Push backend image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
