@@ -15,3 +15,4 @@ kubectl apply -f k8s/
 
 ## Access
 minikube service myapp-service
+CI/CD pipeline test
